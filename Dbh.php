@@ -8,7 +8,7 @@
     // private $DBname = "sql1517345_2";
     // _____ gives me error phpSQLSTATE[HY000] [2002] _____
 
-    private $DBhost = "localhost";
+    private $DBhost = "out27.keliweb.com";
     private $DBuser = "udkedhjd_dev";
     private $DBpwd = 'as@$asfaskjpjAFaks2';
     private $DBname = "udkedhjd_maindb";
