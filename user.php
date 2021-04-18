@@ -161,7 +161,7 @@
           //ok if got here
           echo "Upload Complete!";
       } catch (Exception $e) {
-          die ('File did not upload: ' . $e->getMessage());
+          echo ('File did not upload: ' . $e->getMessage());
       }
         // if(!move_uploaded_file($tmpFilePath, $newFilePath)) {
         //   $message .= "sorry unexpected error #5101";
@@ -177,7 +177,7 @@
       }
       $uploadError = 0;
     }
-    header("Location:user.php?message=".$message);
+    //header("Location:user.php?message=".$message);
   }
   ob_flush();
 
