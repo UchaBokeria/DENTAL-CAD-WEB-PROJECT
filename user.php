@@ -136,7 +136,7 @@
 
     $extensonError = "";
     // extension filter
-    if($extension != "stl" && $extension != "dcm" && $extension != "rar" && $extension != "zip_entry_compressionmethod") {
+    if($extension != "stl" && $extension != "dcm" && $extension != "rar" && $extension != "zip") {
       $extensonError = "<br> Something went wrong! ".$extension." is not allowed only STL,DCM,ZIP,RAR files.<br>";
       $uploadError = 1;
     }
