@@ -140,44 +140,30 @@
       $tmpFilePath = $_FILES['uploadFile']['tmp_name'][$i];
       $extension = strtolower(pathinfo($files[$i],PATHINFO_EXTENSION));
 
-      $doneMsg = "The file ". htmlspecialchars( basename( $_FILES["uploadFile"]["name"]));
+      $doneMsg = "The file ". htmlspecialchars(basename($_FILES["uploadFile"]["name"][$i]));
       if($extension != "stl" && $extension != "dcm" && $extension != "rar" && $extension != "zip") {
         $extensonError = " went wrong! ".$extension." is not allowed only STL,DCM,ZIP,RAR files.<br>";
         $uploadError = 1;
       }
       if ($tmpFilePath != "" && $uploadError != 1){
         //Setup our new file path
-        $newFilePath = "uploads/" . $_FILES['uploadFile']['name'][$i];
+        $newFilePath = "uploads/" . basename($_FILES['uploadFile']['name'][$i]);
         //File is uploaded to temp dir
-        try {
-          //throw exception if can't move the file
-          if (!move_uploaded_file($tmpFilePath, $newFilePath)) {
-              throw new Exception('Could not move file');
-          }
-      
-          //do some more things with the file which may also throw an exception
-          //...
-      
-          //ok if got here
-          echo "Upload Complete!";
-      } catch (Exception $e) {
-          echo ('File did not upload: ' . $e->getMessage());
-      }
-        // if(!move_uploaded_file($tmpFilePath, $newFilePath)) {
-        //   $message .= "sorry unexpected error #5101";
-        // }
-        // else{
-        //   $object = array($fullName,$patientName,$newFilePath,$category,$user);
-        //   $result = $Controller->fileUpload($object);
-        //   $message .= $result ? $doneMsg . " has been uploaded.<br>" : $doneMsg . " has #5031 error. <br>" ;
-        // }
+        if(!move_uploaded_file($tmpFilePath, $newFilePath)) {
+          $message .= "sorry unexpected error #5101";
+        }
+        else{
+          $object = array($fullName,$patientName,$newFilePath,$category,$user);
+          $result = $Controller->fileUpload($object);
+          $message .= $result ? $doneMsg . " has been uploaded.<br>" : $doneMsg . " has #5031 error. <br>" ;
+        }
       }
       else{
         $message .= $doneMsg . " failed.<br>" . $extensonError;
       }
       $uploadError = 0;
     }
-    //header("Location:user.php?message=".$message);
+    header("Location:user.php?message=".$message);
   }
   ob_flush();
 
