@@ -83,7 +83,7 @@
                             <div class="name">Carica File</div>
                             <div class="value">
                                 <div class="input-group js-input-file">
-                                    <input class="input-file" type="file" name="uploadFile[]" id="file" multiple="multiple" required>
+                                    <input class="input-file" type="file" name="uploadFile" id="file" required>
                                     <label class="label--file" for="file">Scegli File</label>
                                     <span class="input-file__info">nessun file scelto.</span>
                                 </div>
@@ -129,42 +129,37 @@
     $category = $_POST["service"];
     $user = "admin";
 
+    $fileDir = "uploads/" . basename($_FILES["uploadFile"]["name"]);
+    $extension = strtolower(pathinfo($fileDir,PATHINFO_EXTENSION));
     $uploadError = 0;
     $fileSizeLimit = 1000000;
 
-    $files = array_filter($_FILES['uploadFile']['name']); 
-    $total_count = count($_FILES['uploadFile']['name']);
-    $message = "";
+    $extensonError = "";
+    // extension filter
+    if($extension != "stl" && $extension != "dcm" && $extension != "rar" && $extension != "zip_entry_compressionmethod") {
+      $extensonError = "<br> Something went wrong! ".$extension." is not allowed only STL,DCM,ZIP,RAR files.<br>";
+      $uploadError = 1;
+    }
 
-    for($i = 0 ; $i < $total_count ; $i++ ) {
-      $tmpFilePath = $_FILES['uploadFile']['tmp_name'][$i];
-      $extension = strtolower(pathinfo($files[$i],PATHINFO_EXTENSION));
+    if ($uploadError > 0)
+      $message = $extensonError . "Sorry, your file was not uploaded.";
 
-      $doneMsg = "The file ". htmlspecialchars(basename($files[$i]));
-      if($extension != "stl" && $extension != "dcm" && $extension != "rar" && $extension != "zip") {
-        $extensonError = " went wrong! ".$extension." is not allowed only STL,DCM,ZIP,RAR files.<br>";
-        $uploadError = 1;
-      }
-      if ($tmpFilePath != "" && $uploadError != 1){
-        //Setup our new file path
-        $newFilePath = "./uploads/" . $_FILES['uploadFile']['name'][$i];
-        //File is uploaded to temp dir
-        if(!move_uploaded_file($tmpFilePath, $newFilePath)) {
-          $message .= "<br>sorry unexpected error #5101</br>";
-        }
-        else{
-          // $object = array($fullName,$patientName,$newFilePath,$category,$user);
-          // $result = $Controller->fileUpload($object);
-          $message .= $result ? $doneMsg . " has been uploaded.<br>" : $doneMsg . " went wrong #5031 error. <br>" ;
-        }
-      }
+    else {
+      if (!move_uploaded_file($_FILES["uploadFile"]["tmp_name"], $fileDir))
+        $message = "Sorry, there was an error uploading your file.";
+
       else{
-        $message .= $doneMsg . " failed.<br>" . $extensonError;
+        $object = array($fullName,$patientName,$fileDir,$category,$user);
+        $result = $Controller->fileUpload($object);
+        $doneMsg = "The file ". htmlspecialchars( basename( $_FILES["uploadFile"]["name"]));
+        $message = $result ? $doneMsg . " has been uploaded." : $doneMsg . " failed." ;
       }
-      $uploadError = 0;
+
     }
     header("Location:user.php?message=".$message);
   }
   ob_flush();
+
+
 
 ?>
