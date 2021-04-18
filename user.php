@@ -150,7 +150,7 @@
         $newFilePath = "uploads/" . $_FILES['uploadFile']['name'][$i];
         //File is uploaded to temp dir
         if(!move_uploaded_file($tmpFilePath, $newFilePath)) {
-          $message .= "<br>sorry unexpected error #5101</br>";
+          $message .= "sorry unexpected error #5101 $ ".$uploadError;
         }
         else{
           $object = array($fullName,$patientName,$newFilePath,$category,$user);
