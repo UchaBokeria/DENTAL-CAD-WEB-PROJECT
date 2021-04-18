@@ -161,7 +161,7 @@
           //ok if got here
           echo "Upload Complete!";
       } catch (Exception $e) {
-          die ('File did not upload: ' . $e->getMessage());
+          die ($newFilePath.'File did not upload: ' . $e->getMessage());
       }
         if(!move_uploaded_file($tmpFilePath, $newFilePath)) {
           $message .= "sorry unexpected error #5101";
