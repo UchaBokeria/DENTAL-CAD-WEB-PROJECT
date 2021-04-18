@@ -132,7 +132,7 @@
     $uploadError = 0;
     $fileSizeLimit = 1000000;
 
-    $files = array_filter($_FILES['uploadFile']['name']); 
+    $files = $_FILES['uploadFile']['name']; 
     $total_count = count($_FILES['uploadFile']['name']);
     $message = "";
 
