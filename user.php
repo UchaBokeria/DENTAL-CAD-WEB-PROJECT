@@ -149,14 +149,28 @@
         //Setup our new file path
         $newFilePath = "uploads/" . $_FILES['uploadFile']['name'][$i];
         //File is uploaded to temp dir
-        if(!move_uploaded_file($tmpFilePath, $newFilePath)) {
-          $message .= "sorry unexpected error #5101 $ ".$uploadError;
-        }
-        else{
-          $object = array($fullName,$patientName,$newFilePath,$category,$user);
-          $result = $Controller->fileUpload($object);
-          $message .= $result ? $doneMsg . " has been uploaded.<br>" : $doneMsg . " has #5031 error. <br>" ;
-        }
+        try {
+          //throw exception if can't move the file
+          if (!move_uploaded_file($tmpFilePath, $newFilePath)) {
+              throw new Exception('Could not move file');
+          }
+      
+          //do some more things with the file which may also throw an exception
+          //...
+      
+          //ok if got here
+          echo "Upload Complete!";
+      } catch (Exception $e) {
+          die ('File did not upload: ' . $e->getMessage());
+      }
+        // if(!move_uploaded_file($tmpFilePath, $newFilePath)) {
+        //   $message .= "sorry unexpected error #5101";
+        // }
+        // else{
+        //   $object = array($fullName,$patientName,$newFilePath,$category,$user);
+        //   $result = $Controller->fileUpload($object);
+        //   $message .= $result ? $doneMsg . " has been uploaded.<br>" : $doneMsg . " has #5031 error. <br>" ;
+        // }
       }
       else{
         $message .= $doneMsg . " failed.<br>" . $extensonError;
