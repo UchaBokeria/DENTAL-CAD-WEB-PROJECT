@@ -147,7 +147,7 @@
       }
       if ($tmpFilePath != "" && $uploadError != 1){
         //Setup our new file path
-        $newFilePath = "./uploads/" . $_FILES['uploadFile']['name'][$i];
+        $newFilePath = "uploads/" . $_FILES['uploadFile']['name'][$i];
         //File is uploaded to temp dir
         if(!move_uploaded_file($tmpFilePath, $newFilePath)) {
           $message .= "<br>sorry unexpected error #5101</br>";
