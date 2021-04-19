@@ -51,7 +51,15 @@ a {
      -o-transition: all .3s ease-in-out;
      transition: all .3s ease-in-out;
 }
-
+@media screen and (max-width:566px){
+  #responsiveX{
+    height: 20% !important;
+    margin-top: 10vh !important;
+  }
+  .header_main{
+    background-size:100% 120vh  !important;
+  }
+}
 h1,
 h2,
 h3,
